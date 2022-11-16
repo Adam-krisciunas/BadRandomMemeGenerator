@@ -1,0 +1,48 @@
+
+import json
+import random
+import requests
+from PIL import Image, ImageDraw, ImageFont
+
+response = requests.get('https://v2.jokeapi.dev/joke/Any?safe-mode&amount=11')
+json_string = response.content
+
+parsed_json = json.loads(json_string) # Now we have a python dictionary
+
+#print(parsed_json) # make sure it prints
+#print(type(parsed_json)) - make sure its a dictionary
+
+#part of the joke is that this code will sometimes run and sometimes not run. real funny if you ask me.
+#for i in range(49):
+    #print("your jokes sir: ", parsed_json['jokes'][i]['setup'], parsed_json['jokes'][i]['delivery'] )
+
+'''
+def randomJoke(dictionary):
+    i = random.randrange(49)
+    x = random.randrange(49)
+    if x == i:
+        x = random.randrange(49)
+    else:
+        for x in dictionary:
+            for x in dictionary:
+                print("your jokes sir: ", parsed_json['jokes'][i]['setup'], parsed_json['jokes'][x]['delivery'])
+'''
+#will have different random numbers, only pulls once tho, need to iterate it somehow and make it spit out, could probably make it a function
+
+testout = random.sample(range(10),2)
+i = testout[0]
+j = testout[1]
+
+#print("your jokes sir: ", parsed_json['jokes'][i]['setup'], parsed_json['jokes'][j]['delivery'])
+
+print("i = ", i, "j = ", j)
+
+my_image = Image.open("butlermemetemplate.jpg")
+title_font = ImageFont.truetype('RockoFLF.ttf', 12)
+title_text = "your jokes sir: " + parsed_json['jokes'][i]['setup']
+bottom_text = parsed_json['jokes'][j]['delivery']
+image_editable = ImageDraw.Draw(my_image)
+image_editable.text((10,90), title_text, (0, 0, 0), font = title_font)
+image_editable.text((20,105), bottom_text, (0,0,0), font = title_font)
+my_image.save("result.jpg")
+
